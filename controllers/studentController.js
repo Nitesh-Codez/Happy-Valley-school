@@ -39,6 +39,7 @@ exports.getStudents = async (req, res) => {
   }
 };
 
+// Add student
 exports.addStudent = async (req, res) => {
   const {
     name,
@@ -158,6 +159,20 @@ exports.addStudent = async (req, res) => {
     });
   }
 };
+// Delete student
+exports.deleteStudent = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await db.query("DELETE FROM students WHERE id = $1", [id]);
+    res.json({ success: true, message: "Student deleted successfully" });
+
+  } catch (err) {
+    console.log("DB ERROR:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+};
+
 // --------------------- PROFILE PHOTO ---------------------
 
 exports.uploadProfilePhoto = async (req, res) => {
