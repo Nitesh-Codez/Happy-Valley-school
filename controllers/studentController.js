@@ -39,21 +39,109 @@ exports.getStudents = async (req, res) => {
   }
 };
 
-// Add student
 exports.addStudent = async (req, res) => {
-  const { name, class: studentClass, password, mobile = null, address = null, joining_date = null } = req.body;
+  const {
+    name,
+    class: studentClass,
+    password,
+
+    father_name = null,
+    mother_name = null,
+    date_of_birth = null,
+
+    aadhar_no = null,
+    samagra_id = null,
+    pan_no = null,
+    apaar_id = null,
+
+    account_no = null,
+
+    whatsapp_no = null,
+    mobile = null,
+
+    address = null,
+    joining_date = null,
+
+    session = null,
+    stream = null
+  } = req.body;
 
   if (!name || !studentClass || !password) {
-    return res.json({ success: false, message: "Name, class and password are required" });
+    return res.json({
+      success: false,
+      message: "Name, Class and Password are required"
+    });
   }
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const result = await db.query(
-      `INSERT INTO students (name, "class", password, mobile, joining_date, address, role) 
-       VALUES ($1,$2,$3,$4,$5,$6,'student') RETURNING id`,
-      [name, studentClass, hashedPassword, mobile, joining_date, address]
+      `
+      INSERT INTO students (
+        name,
+        "class",
+        password,
+
+        father_name,
+        mother_name,
+        date_of_birth,
+
+        aadhar_no,
+        samagra_id,
+        pan_no,
+        apaar_id,
+
+        account_no,
+
+        whatsapp_no,
+        mobile,
+
+        address,
+        joining_date,
+
+        session,
+        stream,
+
+        role
+      )
+      VALUES (
+        $1,$2,$3,
+        $4,$5,$6,
+        $7,$8,$9,$10,
+        $11,
+        $12,$13,
+        $14,$15,
+        $16,$17,
+        'student'
+      )
+      RETURNING id
+      `,
+      [
+        name,
+        studentClass,
+        hashedPassword,
+
+        father_name,
+        mother_name,
+        date_of_birth,
+
+        aadhar_no,
+        samagra_id,
+        pan_no,
+        apaar_id,
+
+        account_no,
+
+        whatsapp_no,
+        mobile,
+
+        address,
+        joining_date,
+
+        session,
+        stream
+      ]
     );
 
     res.json({
@@ -64,23 +152,12 @@ exports.addStudent = async (req, res) => {
 
   } catch (err) {
     console.log("DB ERROR:", err);
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({
+      success: false,
+      message: err.message
+    });
   }
 };
-// Delete student
-exports.deleteStudent = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    await db.query("DELETE FROM students WHERE id = $1", [id]);
-    res.json({ success: true, message: "Student deleted successfully" });
-
-  } catch (err) {
-    console.log("DB ERROR:", err);
-    res.status(500).json({ success: false, message: err.message });
-  }
-};
-
 // --------------------- PROFILE PHOTO ---------------------
 
 exports.uploadProfilePhoto = async (req, res) => {
