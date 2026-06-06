@@ -1,4 +1,18 @@
+const db = require("../db");
 
+const { createClient } = require("@supabase/supabase-js");
+
+// ================= CLOUDINARY (LEGACY / OLD DATA ONLY) =================
+
+// ================= SUPABASE =================
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+// 🔒 fallback bucket
+const ASSIGNMENT_BUCKET =
+  process.env.SUPABASE_ASSIGNMENT_BUCKET || "assignments";
 
 // ============================================================
 // ================= UPLOAD ASSIGNMENT =========================
