@@ -1,23 +1,4 @@
-const db = require("../db");
-const cloudinary = require("cloudinary").v2;
-const { createClient } = require("@supabase/supabase-js");
 
-// ================= CLOUDINARY (LEGACY / OLD DATA ONLY) =================
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-// ================= SUPABASE =================
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
-);
-
-// 🔒 fallback bucket
-const ASSIGNMENT_BUCKET =
-  process.env.SUPABASE_ASSIGNMENT_BUCKET || "assignments";
 
 // ============================================================
 // ================= UPLOAD ASSIGNMENT =========================
