@@ -30,7 +30,7 @@ const upload = multer({
 exports.getStudents = async (req, res) => {
   try {
     const results = await db.query(
-      "SELECT id, name, \"class\", mobile, address, profile_photo FROM students WHERE role='student'"
+      "SELECT * FROM students WHERE role='student'"
     );
     res.json({ success: true, students: results.rows });
   } catch (err) {
